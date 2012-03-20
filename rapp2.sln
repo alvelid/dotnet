@@ -5,8 +5,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "viewer", "viewer\viewer.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "admin", "admin\admin.csproj", "{53C7F59A-BF02-44F7-803C-E40FD2A0BFCD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web", "Web\Web.csproj", "{50834301-8E42-461C-B419-8ACB2AA8BB12}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,16 +35,6 @@ Global
 		{53C7F59A-BF02-44F7-803C-E40FD2A0BFCD}.Release|Mixed Platforms.Build.0 = Release|x86
 		{53C7F59A-BF02-44F7-803C-E40FD2A0BFCD}.Release|x86.ActiveCfg = Release|x86
 		{53C7F59A-BF02-44F7-803C-E40FD2A0BFCD}.Release|x86.Build.0 = Release|x86
-		{50834301-8E42-461C-B419-8ACB2AA8BB12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{50834301-8E42-461C-B419-8ACB2AA8BB12}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{50834301-8E42-461C-B419-8ACB2AA8BB12}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{50834301-8E42-461C-B419-8ACB2AA8BB12}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{50834301-8E42-461C-B419-8ACB2AA8BB12}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{50834301-8E42-461C-B419-8ACB2AA8BB12}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{50834301-8E42-461C-B419-8ACB2AA8BB12}.Release|Any CPU.Build.0 = Release|Any CPU
-		{50834301-8E42-461C-B419-8ACB2AA8BB12}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{50834301-8E42-461C-B419-8ACB2AA8BB12}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{50834301-8E42-461C-B419-8ACB2AA8BB12}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
