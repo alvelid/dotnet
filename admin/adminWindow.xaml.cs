@@ -16,9 +16,9 @@ namespace admin
     /// <summary>
     /// Interaction logic for Window1.xaml
     /// </summary>
-    public partial class Window1 : Window
+    public partial class AdminWindow : Window
     {
-        public Window1()
+        public AdminWindow()
         {
             InitializeComponent();
         }

@@ -20,5 +20,17 @@ namespace admin {
 		public MainWindow() {
 			InitializeComponent();
 		}
+
+        private void textBox2_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
+
+        private void loginButton_Click(object sender, RoutedEventArgs e)
+        {
+            AdminWindow a = new AdminWindow();
+            a.Show();
+            this.Close();
+        }
 	}
 }
