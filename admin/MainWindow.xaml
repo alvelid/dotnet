@@ -7,6 +7,6 @@
         <TextBox Height="30" HorizontalAlignment="Left" Margin="81,130,0,0" Name="textBox2" VerticalAlignment="Top" Width="166" />
         <Label Height="31" HorizontalAlignment="Left" Margin="131,101,0,0" Name="passwordLabel" Content="Lösenord" VerticalAlignment="Top" Width="68" />
         <Label Height="31" HorizontalAlignment="Left" Margin="118,23,0,0" Name="usernameLabel" Content="Användarnamn" VerticalAlignment="Top" Width="90" />
-        <Button Content="Logga in" Height="38" HorizontalAlignment="Left" Margin="98,188,0,0" Name="loginButton" VerticalAlignment="Top" Width="129" />
+        <Button Content="Logga in" Height="38" HorizontalAlignment="Left" Margin="98,188,0,0" Name="loginButton" VerticalAlignment="Top" Width="129" Click="loginButton_Click" />
     </Grid>
 </Window>
