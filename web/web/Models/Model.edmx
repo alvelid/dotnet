@@ -10,7 +10,9 @@
           <EntitySet Name="CourseInstances" EntityType="starwarsModel.Store.CourseInstances" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="CourseParts" EntityType="starwarsModel.Store.CourseParts" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Courses" EntityType="starwarsModel.Store.Courses" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="GradeType" EntityType="starwarsModel.Store.GradeType" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Results" EntityType="starwarsModel.Store.Results" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="sysdiagrams" EntityType="starwarsModel.Store.sysdiagrams" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Users" EntityType="starwarsModel.Store.Users" store:Type="Tables" Schema="dbo" />
           <AssociationSet Name="FK_CourseGrade_Course" Association="starwarsModel.Store.FK_CourseGrade_Course">
             <End Role="Courses" EntitySet="Courses" />
@@ -24,8 +26,8 @@
             <End Role="Courses" EntitySet="Courses" />
             <End Role="CourseInstances" EntitySet="CourseInstances" />
           </AssociationSet>
-          <AssociationSet Name="FK_CourseParts_CourseInstance" Association="starwarsModel.Store.FK_CourseParts_CourseInstance">
-            <End Role="CourseInstances" EntitySet="CourseInstances" />
+          <AssociationSet Name="FK_CourseParts_GradeType" Association="starwarsModel.Store.FK_CourseParts_GradeType">
+            <End Role="GradeType" EntitySet="GradeType" />
             <End Role="CourseParts" EntitySet="CourseParts" />
           </AssociationSet>
           <AssociationSet Name="FK_Result_CourseInstance" Association="starwarsModel.Store.FK_Result_CourseInstance">
@@ -43,16 +45,15 @@
             <PropertyRef Name="courseID" />
           </Key>
           <Property Name="userID" Type="int" Nullable="false" />
-          <Property Name="courseID" Type="int" Nullable="false" />
+          <Property Name="courseID" Type="nvarchar" Nullable="false" MaxLength="10" />
           <Property Name="grade" Type="nchar" Nullable="false" MaxLength="10" />
         </EntityType>
         <EntityType Name="CourseInstances">
           <Key>
             <PropertyRef Name="instanceID" />
           </Key>
-          <Property Name="instanceID" Type="int" Nullable="false" />
-          <Property Name="courseID" Type="int" Nullable="false" />
-          <Property Name="name" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="instanceID" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="courseID" Type="nvarchar" Nullable="false" MaxLength="10" />
         </EntityType>
         <EntityType Name="CourseParts">
           <Key>
@@ -60,7 +61,7 @@
           </Key>
           <Property Name="partID" Type="int" Nullable="false" />
           <Property Name="name" Type="nvarchar" Nullable="false" MaxLength="50" />
-          <Property Name="instanceID" Type="int" Nullable="false" />
+          <Property Name="instanceID" Type="nvarchar" Nullable="false" MaxLength="50" />
           <Property Name="weight" Type="float" />
           <Property Name="points" Type="float" />
           <Property Name="gradeType" Type="int" />
@@ -69,9 +70,16 @@
           <Key>
             <PropertyRef Name="courseID" />
           </Key>
-          <Property Name="courseID" Type="int" Nullable="false" />
+          <Property Name="courseID" Type="nvarchar" Nullable="false" MaxLength="10" />
           <Property Name="name" Type="nvarchar" Nullable="false" MaxLength="50" />
           <Property Name="points" Type="float" Nullable="false" />
+        </EntityType>
+        <EntityType Name="GradeType">
+          <Key>
+            <PropertyRef Name="typeID" />
+          </Key>
+          <Property Name="typeID" Type="int" Nullable="false" />
+          <Property Name="name" Type="nvarchar" Nullable="false" MaxLength="10" />
         </EntityType>
         <EntityType Name="Results">
           <Key>
@@ -80,8 +88,18 @@
           </Key>
           <Property Name="userID" Type="int" Nullable="false" />
           <Property Name="partID" Type="int" Nullable="false" />
-          <Property Name="value" Type="float" />
+          <Property Name="value" Type="nvarchar" MaxLength="50" />
           <Property Name="time" Type="date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" Nullable="false" MaxLength="128" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
         </EntityType>
         <EntityType Name="Users">
           <Key>
@@ -90,6 +108,7 @@
           <Property Name="userID" Type="int" Nullable="false" />
           <Property Name="roleID" Type="int" Nullable="false" />
           <Property Name="login" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="fullname" Type="nvarchar" Nullable="false" MaxLength="50" />
           <Property Name="password" Type="nvarchar" Nullable="false" MaxLength="50" />
         </EntityType>
         <Association Name="FK_CourseGrade_Course">
@@ -128,15 +147,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_CourseParts_CourseInstance">
-          <End Role="CourseInstances" Type="starwarsModel.Store.CourseInstances" Multiplicity="1" />
+        <Association Name="FK_CourseParts_GradeType">
+          <End Role="GradeType" Type="starwarsModel.Store.GradeType" Multiplicity="0..1" />
           <End Role="CourseParts" Type="starwarsModel.Store.CourseParts" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="CourseInstances">
-              <PropertyRef Name="instanceID" />
+            <Principal Role="GradeType">
+              <PropertyRef Name="typeID" />
             </Principal>
             <Dependent Role="CourseParts">
-              <PropertyRef Name="instanceID" />
+              <PropertyRef Name="gradeType" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -169,12 +188,14 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="starwarsModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
-        <EntityContainer Name="starwarsEntities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="starwarsEntities1" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="CourseGrades" EntityType="starwarsModel.CourseGrade" />
           <EntitySet Name="CourseInstances" EntityType="starwarsModel.CourseInstance" />
           <EntitySet Name="CourseParts" EntityType="starwarsModel.CoursePart" />
           <EntitySet Name="Courses" EntityType="starwarsModel.Course" />
+          <EntitySet Name="GradeTypes" EntityType="starwarsModel.GradeType" />
           <EntitySet Name="Results" EntityType="starwarsModel.Result" />
+          <EntitySet Name="sysdiagrams" EntityType="starwarsModel.sysdiagram" />
           <EntitySet Name="Users" EntityType="starwarsModel.User" />
           <AssociationSet Name="FK_CourseGrade_Course" Association="starwarsModel.FK_CourseGrade_Course">
             <End Role="Courses" EntitySet="Courses" />
@@ -188,8 +209,8 @@
             <End Role="Courses" EntitySet="Courses" />
             <End Role="CourseInstances" EntitySet="CourseInstances" />
           </AssociationSet>
-          <AssociationSet Name="FK_CourseParts_CourseInstance" Association="starwarsModel.FK_CourseParts_CourseInstance">
-            <End Role="CourseInstances" EntitySet="CourseInstances" />
+          <AssociationSet Name="FK_CourseParts_GradeType" Association="starwarsModel.FK_CourseParts_GradeType">
+            <End Role="GradeType" EntitySet="GradeTypes" />
             <End Role="CourseParts" EntitySet="CourseParts" />
           </AssociationSet>
           <AssociationSet Name="FK_Result_CourseInstance" Association="starwarsModel.FK_Result_CourseInstance">
@@ -207,7 +228,7 @@
             <PropertyRef Name="courseID" />
           </Key>
           <Property Name="userID" Type="Int32" Nullable="false" />
-          <Property Name="courseID" Type="Int32" Nullable="false" />
+          <Property Name="courseID" Type="String" Nullable="false" MaxLength="10" Unicode="true" FixedLength="false" />
           <Property Name="grade" Type="String" Nullable="false" MaxLength="10" Unicode="true" FixedLength="true" />
           <NavigationProperty Name="Course" Relationship="starwarsModel.FK_CourseGrade_Course" FromRole="CourseGrades" ToRole="Courses" />
           <NavigationProperty Name="User" Relationship="starwarsModel.FK_CourseGrade_User" FromRole="CourseGrades" ToRole="Users" />
@@ -216,11 +237,9 @@
           <Key>
             <PropertyRef Name="instanceID" />
           </Key>
-          <Property Name="instanceID" Type="Int32" Nullable="false" />
-          <Property Name="courseID" Type="Int32" Nullable="false" />
-          <Property Name="name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="instanceID" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="courseID" Type="String" Nullable="false" MaxLength="10" Unicode="true" FixedLength="false" />
           <NavigationProperty Name="Course" Relationship="starwarsModel.FK_CourseInstance_Course" FromRole="CourseInstances" ToRole="Courses" />
-          <NavigationProperty Name="CourseParts" Relationship="starwarsModel.FK_CourseParts_CourseInstance" FromRole="CourseInstances" ToRole="CourseParts" />
         </EntityType>
         <EntityType Name="CoursePart">
           <Key>
@@ -228,22 +247,30 @@
           </Key>
           <Property Name="partID" Type="Int32" Nullable="false" />
           <Property Name="name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="instanceID" Type="Int32" Nullable="false" />
+          <Property Name="instanceID" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
           <Property Name="weight" Type="Double" />
           <Property Name="points" Type="Double" />
           <Property Name="gradeType" Type="Int32" />
-          <NavigationProperty Name="CourseInstance" Relationship="starwarsModel.FK_CourseParts_CourseInstance" FromRole="CourseParts" ToRole="CourseInstances" />
+          <NavigationProperty Name="GradeType1" Relationship="starwarsModel.FK_CourseParts_GradeType" FromRole="CourseParts" ToRole="GradeType" />
           <NavigationProperty Name="Results" Relationship="starwarsModel.FK_Result_CourseInstance" FromRole="CourseParts" ToRole="Results" />
         </EntityType>
         <EntityType Name="Course">
           <Key>
             <PropertyRef Name="courseID" />
           </Key>
-          <Property Name="courseID" Type="Int32" Nullable="false" />
+          <Property Name="courseID" Type="String" Nullable="false" MaxLength="10" Unicode="true" FixedLength="false" />
           <Property Name="name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
           <Property Name="points" Type="Double" Nullable="false" />
           <NavigationProperty Name="CourseGrades" Relationship="starwarsModel.FK_CourseGrade_Course" FromRole="Courses" ToRole="CourseGrades" />
           <NavigationProperty Name="CourseInstances" Relationship="starwarsModel.FK_CourseInstance_Course" FromRole="Courses" ToRole="CourseInstances" />
+        </EntityType>
+        <EntityType Name="GradeType">
+          <Key>
+            <PropertyRef Name="typeID" />
+          </Key>
+          <Property Name="typeID" Type="Int32" Nullable="false" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="10" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="CourseParts" Relationship="starwarsModel.FK_CourseParts_GradeType" FromRole="GradeType" ToRole="CourseParts" />
         </EntityType>
         <EntityType Name="Result">
           <Key>
@@ -252,10 +279,20 @@
           </Key>
           <Property Name="userID" Type="Int32" Nullable="false" />
           <Property Name="partID" Type="Int32" Nullable="false" />
-          <Property Name="value" Type="Double" />
+          <Property Name="value" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
           <Property Name="time" Type="DateTime" Nullable="false" />
           <NavigationProperty Name="CoursePart" Relationship="starwarsModel.FK_Result_CourseInstance" FromRole="Results" ToRole="CourseParts" />
           <NavigationProperty Name="User" Relationship="starwarsModel.FK_Result_User" FromRole="Results" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" Nullable="false" MaxLength="128" Unicode="true" FixedLength="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -264,6 +301,7 @@
           <Property Name="userID" Type="Int32" Nullable="false" />
           <Property Name="roleID" Type="Int32" Nullable="false" />
           <Property Name="login" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="fullname" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
           <Property Name="password" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
           <NavigationProperty Name="CourseGrades" Relationship="starwarsModel.FK_CourseGrade_User" FromRole="Users" ToRole="CourseGrades" />
           <NavigationProperty Name="Results" Relationship="starwarsModel.FK_Result_User" FromRole="Users" ToRole="Results" />
@@ -304,15 +342,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_CourseParts_CourseInstance">
-          <End Role="CourseInstances" Type="starwarsModel.CourseInstance" Multiplicity="1" />
+        <Association Name="FK_CourseParts_GradeType">
+          <End Role="GradeType" Type="starwarsModel.GradeType" Multiplicity="0..1" />
           <End Role="CourseParts" Type="starwarsModel.CoursePart" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="CourseInstances">
-              <PropertyRef Name="instanceID" />
+            <Principal Role="GradeType">
+              <PropertyRef Name="typeID" />
             </Principal>
             <Dependent Role="CourseParts">
-              <PropertyRef Name="instanceID" />
+              <PropertyRef Name="gradeType" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -345,7 +383,7 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="starwarsModelStoreContainer" CdmEntityContainer="starwarsEntities">
+        <EntityContainerMapping StorageEntityContainer="starwarsModelStoreContainer" CdmEntityContainer="starwarsEntities1">
           <EntitySetMapping Name="CourseGrades"><EntityTypeMapping TypeName="starwarsModel.CourseGrade"><MappingFragment StoreEntitySet="CourseGrades">
             <ScalarProperty Name="userID" ColumnName="userID" />
             <ScalarProperty Name="courseID" ColumnName="courseID" />
@@ -354,7 +392,6 @@
           <EntitySetMapping Name="CourseInstances"><EntityTypeMapping TypeName="starwarsModel.CourseInstance"><MappingFragment StoreEntitySet="CourseInstances">
             <ScalarProperty Name="instanceID" ColumnName="instanceID" />
             <ScalarProperty Name="courseID" ColumnName="courseID" />
-            <ScalarProperty Name="name" ColumnName="name" />
           </MappingFragment></EntityTypeMapping></EntitySetMapping>
           <EntitySetMapping Name="CourseParts"><EntityTypeMapping TypeName="starwarsModel.CoursePart"><MappingFragment StoreEntitySet="CourseParts">
             <ScalarProperty Name="partID" ColumnName="partID" />
@@ -369,16 +406,28 @@
             <ScalarProperty Name="name" ColumnName="name" />
             <ScalarProperty Name="points" ColumnName="points" />
           </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="GradeTypes"><EntityTypeMapping TypeName="starwarsModel.GradeType"><MappingFragment StoreEntitySet="GradeType">
+            <ScalarProperty Name="typeID" ColumnName="typeID" />
+            <ScalarProperty Name="name" ColumnName="name" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
           <EntitySetMapping Name="Results"><EntityTypeMapping TypeName="starwarsModel.Result"><MappingFragment StoreEntitySet="Results">
             <ScalarProperty Name="userID" ColumnName="userID" />
             <ScalarProperty Name="partID" ColumnName="partID" />
             <ScalarProperty Name="value" ColumnName="value" />
             <ScalarProperty Name="time" ColumnName="time" />
           </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams"><EntityTypeMapping TypeName="starwarsModel.sysdiagram"><MappingFragment StoreEntitySet="sysdiagrams">
+            <ScalarProperty Name="name" ColumnName="name" />
+            <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+            <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+            <ScalarProperty Name="version" ColumnName="version" />
+            <ScalarProperty Name="definition" ColumnName="definition" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
           <EntitySetMapping Name="Users"><EntityTypeMapping TypeName="starwarsModel.User"><MappingFragment StoreEntitySet="Users">
             <ScalarProperty Name="userID" ColumnName="userID" />
             <ScalarProperty Name="roleID" ColumnName="roleID" />
             <ScalarProperty Name="login" ColumnName="login" />
+            <ScalarProperty Name="fullname" ColumnName="fullname" />
             <ScalarProperty Name="password" ColumnName="password" />
           </MappingFragment></EntityTypeMapping></EntitySetMapping>
         </EntityContainerMapping>
@@ -401,36 +450,54 @@
     </Options>
     <!-- Diagram content (shape and connector positions) -->
     <Diagrams>
-      <Diagram Name="Model" ZoomLevel="100">
-        <EntityTypeShape EntityType="starwarsModel.CourseGrade" Width="1.5" PointX="2.25" PointY="1.375" Height="1.9802864583333335" IsExpanded="true" />
-        <EntityTypeShape EntityType="starwarsModel.CourseInstance" Width="1.5" PointX="4.5" PointY="4" Height="1.9802864583333317" IsExpanded="true" />
-        <EntityTypeShape EntityType="starwarsModel.CoursePart" Width="1.5" PointX="6.5" PointY="4" Height="2.5571907552083335" IsExpanded="true" />
-        <EntityTypeShape EntityType="starwarsModel.Course" Width="1.5" PointX="2.5" PointY="4" Height="1.9802864583333335" IsExpanded="true" />
-        <EntityTypeShape EntityType="starwarsModel.Result" Width="1.5" PointX="6.5" PointY="1.25" Height="2.1725878906249996" IsExpanded="true" />
-        <EntityTypeShape EntityType="starwarsModel.User" Width="1.5" PointX="4.375" PointY="1.25" Height="2.1725878906249996" IsExpanded="true" />
+      <Diagram Name="Model">
+        <EntityTypeShape EntityType="starwarsModel.CourseGrade" Width="1.5" PointX="3" PointY="3.875" Height="1.9802864583333335" IsExpanded="true" />
+        <EntityTypeShape EntityType="starwarsModel.CourseInstance" Width="1.5" PointX="3" PointY="7.125" Height="1.5956835937499996" IsExpanded="true" />
+        <EntityTypeShape EntityType="starwarsModel.CoursePart" Width="1.5" PointX="0.75" PointY="7.125" Height="2.5571907552083335" IsExpanded="true" />
+        <EntityTypeShape EntityType="starwarsModel.Course" Width="1.5" PointX="0.75" PointY="0.875" Height="1.9802864583333335" IsExpanded="true" />
+        <EntityTypeShape EntityType="starwarsModel.GradeType" Width="1.5" PointX="1.5" PointY="10.625" Height="1.5956835937499996" IsExpanded="true" />
+        <EntityTypeShape EntityType="starwarsModel.Result" Width="1.5" PointX="3" PointY="0.75" Height="2.1725878906249996" IsExpanded="true" />
+        <EntityTypeShape EntityType="starwarsModel.sysdiagram" Width="1.5" PointX="5.75" PointY="2.125" Height="1.9802864583333317" IsExpanded="true" />
+        <EntityTypeShape EntityType="starwarsModel.User" Width="1.5" PointX="0.75" PointY="3.625" Height="2.3648893229166674" IsExpanded="true" />
         <AssociationConnector Association="starwarsModel.FK_CourseGrade_Course" ManuallyRouted="false">
-          <ConnectorPoint PointX="3.125" PointY="4" />
-          <ConnectorPoint PointX="3.125" PointY="3.3552864583333335" />
+          <ConnectorPoint PointX="2.25" PointY="2.7987469967948715" />
+          <ConnectorPoint PointX="2.6285744349011213" PointY="3.1773214316959919" />
+          <ConnectorPoint PointX="2.7464255650988791" PointY="3.2951725618937506" />
+          <ConnectorPoint PointX="2.78125" PointY="3.3299969967948715" />
+          <ConnectorPoint PointX="2.78125" PointY="4.8651432291666667" />
+          <ConnectorPoint PointX="3" PointY="4.8651432291666667" />
         </AssociationConnector>
         <AssociationConnector Association="starwarsModel.FK_CourseGrade_User" ManuallyRouted="false">
-          <ConnectorPoint PointX="4.375" PointY="2.3651432291666667" />
-          <ConnectorPoint PointX="3.75" PointY="2.3651432291666667" />
+          <ConnectorPoint PointX="2.25" PointY="4.3075716145833329" />
+          <ConnectorPoint PointX="2.5416666666666665" PointY="4.307571614583332" />
+          <ConnectorPoint PointX="2.8645833333333335" PointY="4.3075716145833329" />
+          <ConnectorPoint PointX="3" PointY="4.3075716145833329" />
         </AssociationConnector>
         <AssociationConnector Association="starwarsModel.FK_CourseInstance_Course" ManuallyRouted="false">
-          <ConnectorPoint PointX="4" PointY="4.9901432291666659" />
-          <ConnectorPoint PointX="4.5" PointY="4.9901432291666659" />
+          <ConnectorPoint PointX="2.2257692307692305" PointY="2.8552864583333335" />
+          <ConnectorPoint PointX="2.625" PointY="3.254517227564103" />
+          <ConnectorPoint PointX="2.625" PointY="7.922841796875" />
+          <ConnectorPoint PointX="3" PointY="7.922841796875" />
         </AssociationConnector>
-        <AssociationConnector Association="starwarsModel.FK_CourseParts_CourseInstance" ManuallyRouted="false">
-          <ConnectorPoint PointX="6" PointY="4.9901432291666659" />
-          <ConnectorPoint PointX="6.5" PointY="4.9901432291666659" />
+        <AssociationConnector Association="starwarsModel.FK_CourseParts_GradeType" ManuallyRouted="false">
+          <ConnectorPoint PointX="1.875" PointY="10.625" />
+          <ConnectorPoint PointX="1.875" PointY="9.6821907552083335" />
         </AssociationConnector>
         <AssociationConnector Association="starwarsModel.FK_Result_CourseInstance" ManuallyRouted="false">
-          <ConnectorPoint PointX="7.25" PointY="4" />
-          <ConnectorPoint PointX="7.25" PointY="3.4225878906249996" />
+          <ConnectorPoint PointX="2.25" PointY="7.1873066923076925" />
+          <ConnectorPoint PointX="2.5660744349011204" PointY="6.8712322574065716" />
+          <ConnectorPoint PointX="2.6839255650988791" PointY="6.7533811272088142" />
+          <ConnectorPoint PointX="2.6875" PointY="6.7498066923076934" />
+          <ConnectorPoint PointX="2.6875" PointY="1.8362939453124998" />
+          <ConnectorPoint PointX="3" PointY="1.8362939453124998" />
         </AssociationConnector>
         <AssociationConnector Association="starwarsModel.FK_Result_User" ManuallyRouted="false">
-          <ConnectorPoint PointX="5.875" PointY="2.3362939453125" />
-          <ConnectorPoint PointX="6.5" PointY="2.3362939453125" />
+          <ConnectorPoint PointX="2.25" PointY="3.6561528461538462" />
+          <ConnectorPoint PointX="2.6285744349011204" PointY="3.2775784112527249" />
+          <ConnectorPoint PointX="2.7464255650988791" PointY="3.159727281054967" />
+          <ConnectorPoint PointX="2.84375" PointY="3.0624028461538462" />
+          <ConnectorPoint PointX="2.84375" PointY="2.4106929179687504" />
+          <ConnectorPoint PointX="3" PointY="2.4106929179687504" />
         </AssociationConnector>
       </Diagram>
     </Diagrams>

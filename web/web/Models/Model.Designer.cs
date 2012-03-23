@@ -21,7 +21,7 @@ using System.Runtime.Serialization;
 [assembly: EdmRelationshipAttribute("starwarsModel", "FK_CourseGrade_Course", "Courses", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(web.Models.Course), "CourseGrades", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(web.Models.CourseGrade), true)]
 [assembly: EdmRelationshipAttribute("starwarsModel", "FK_CourseGrade_User", "Users", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(web.Models.User), "CourseGrades", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(web.Models.CourseGrade), true)]
 [assembly: EdmRelationshipAttribute("starwarsModel", "FK_CourseInstance_Course", "Courses", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(web.Models.Course), "CourseInstances", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(web.Models.CourseInstance), true)]
-[assembly: EdmRelationshipAttribute("starwarsModel", "FK_CourseParts_CourseInstance", "CourseInstances", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(web.Models.CourseInstance), "CourseParts", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(web.Models.CoursePart), true)]
+[assembly: EdmRelationshipAttribute("starwarsModel", "FK_CourseParts_GradeType", "GradeType", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(web.Models.GradeType), "CourseParts", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(web.Models.CoursePart), true)]
 [assembly: EdmRelationshipAttribute("starwarsModel", "FK_Result_CourseInstance", "CourseParts", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(web.Models.CoursePart), "Results", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(web.Models.Result), true)]
 [assembly: EdmRelationshipAttribute("starwarsModel", "FK_Result_User", "Users", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(web.Models.User), "Results", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(web.Models.Result), true)]
 
@@ -34,32 +34,32 @@ namespace web.Models
     /// <summary>
     /// No Metadata Documentation available.
     /// </summary>
-    public partial class starwarsEntities : ObjectContext
+    public partial class starwarsEntities1 : ObjectContext
     {
         #region Constructors
     
         /// <summary>
-        /// Initializes a new starwarsEntities object using the connection string found in the 'starwarsEntities' section of the application configuration file.
+        /// Initializes a new starwarsEntities1 object using the connection string found in the 'starwarsEntities1' section of the application configuration file.
         /// </summary>
-        public starwarsEntities() : base("name=starwarsEntities", "starwarsEntities")
+        public starwarsEntities1() : base("name=starwarsEntities1", "starwarsEntities1")
         {
             this.ContextOptions.LazyLoadingEnabled = true;
             OnContextCreated();
         }
     
         /// <summary>
-        /// Initialize a new starwarsEntities object.
+        /// Initialize a new starwarsEntities1 object.
         /// </summary>
-        public starwarsEntities(string connectionString) : base(connectionString, "starwarsEntities")
+        public starwarsEntities1(string connectionString) : base(connectionString, "starwarsEntities1")
         {
             this.ContextOptions.LazyLoadingEnabled = true;
             OnContextCreated();
         }
     
         /// <summary>
-        /// Initialize a new starwarsEntities object.
+        /// Initialize a new starwarsEntities1 object.
         /// </summary>
-        public starwarsEntities(EntityConnection connection) : base(connection, "starwarsEntities")
+        public starwarsEntities1(EntityConnection connection) : base(connection, "starwarsEntities1")
         {
             this.ContextOptions.LazyLoadingEnabled = true;
             OnContextCreated();
@@ -142,6 +142,22 @@ namespace web.Models
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
+        public ObjectSet<GradeType> GradeTypes
+        {
+            get
+            {
+                if ((_GradeTypes == null))
+                {
+                    _GradeTypes = base.CreateObjectSet<GradeType>("GradeTypes");
+                }
+                return _GradeTypes;
+            }
+        }
+        private ObjectSet<GradeType> _GradeTypes;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
         public ObjectSet<Result> Results
         {
             get
@@ -154,6 +170,22 @@ namespace web.Models
             }
         }
         private ObjectSet<Result> _Results;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<sysdiagram> sysdiagrams
+        {
+            get
+            {
+                if ((_sysdiagrams == null))
+                {
+                    _sysdiagrams = base.CreateObjectSet<sysdiagram>("sysdiagrams");
+                }
+                return _sysdiagrams;
+            }
+        }
+        private ObjectSet<sysdiagram> _sysdiagrams;
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -207,11 +239,27 @@ namespace web.Models
         }
     
         /// <summary>
+        /// Deprecated Method for adding a new object to the GradeTypes EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToGradeTypes(GradeType gradeType)
+        {
+            base.AddObject("GradeTypes", gradeType);
+        }
+    
+        /// <summary>
         /// Deprecated Method for adding a new object to the Results EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
         /// </summary>
         public void AddToResults(Result result)
         {
             base.AddObject("Results", result);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the sysdiagrams EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddTosysdiagrams(sysdiagram sysdiagram)
+        {
+            base.AddObject("sysdiagrams", sysdiagram);
         }
     
         /// <summary>
@@ -246,7 +294,7 @@ namespace web.Models
         /// <param name="courseID">Initial value of the courseID property.</param>
         /// <param name="name">Initial value of the name property.</param>
         /// <param name="points">Initial value of the points property.</param>
-        public static Course CreateCourse(global::System.Int32 courseID, global::System.String name, global::System.Double points)
+        public static Course CreateCourse(global::System.String courseID, global::System.String name, global::System.Double points)
         {
             Course course = new Course();
             course.courseID = courseID;
@@ -263,7 +311,7 @@ namespace web.Models
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
         [DataMemberAttribute()]
-        public global::System.Int32 courseID
+        public global::System.String courseID
         {
             get
             {
@@ -275,14 +323,14 @@ namespace web.Models
                 {
                     OncourseIDChanging(value);
                     ReportPropertyChanging("courseID");
-                    _courseID = StructuralObject.SetValidValue(value);
+                    _courseID = StructuralObject.SetValidValue(value, false);
                     ReportPropertyChanged("courseID");
                     OncourseIDChanged();
                 }
             }
         }
-        private global::System.Int32 _courseID;
-        partial void OncourseIDChanging(global::System.Int32 value);
+        private global::System.String _courseID;
+        partial void OncourseIDChanging(global::System.String value);
         partial void OncourseIDChanged();
     
         /// <summary>
@@ -400,7 +448,7 @@ namespace web.Models
         /// <param name="userID">Initial value of the userID property.</param>
         /// <param name="courseID">Initial value of the courseID property.</param>
         /// <param name="grade">Initial value of the grade property.</param>
-        public static CourseGrade CreateCourseGrade(global::System.Int32 userID, global::System.Int32 courseID, global::System.String grade)
+        public static CourseGrade CreateCourseGrade(global::System.Int32 userID, global::System.String courseID, global::System.String grade)
         {
             CourseGrade courseGrade = new CourseGrade();
             courseGrade.userID = userID;
@@ -444,7 +492,7 @@ namespace web.Models
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
         [DataMemberAttribute()]
-        public global::System.Int32 courseID
+        public global::System.String courseID
         {
             get
             {
@@ -456,14 +504,14 @@ namespace web.Models
                 {
                     OncourseIDChanging(value);
                     ReportPropertyChanging("courseID");
-                    _courseID = StructuralObject.SetValidValue(value);
+                    _courseID = StructuralObject.SetValidValue(value, false);
                     ReportPropertyChanged("courseID");
                     OncourseIDChanged();
                 }
             }
         }
-        private global::System.Int32 _courseID;
-        partial void OncourseIDChanging(global::System.Int32 value);
+        private global::System.String _courseID;
+        partial void OncourseIDChanging(global::System.String value);
         partial void OncourseIDChanged();
     
         /// <summary>
@@ -588,13 +636,11 @@ namespace web.Models
         /// </summary>
         /// <param name="instanceID">Initial value of the instanceID property.</param>
         /// <param name="courseID">Initial value of the courseID property.</param>
-        /// <param name="name">Initial value of the name property.</param>
-        public static CourseInstance CreateCourseInstance(global::System.Int32 instanceID, global::System.Int32 courseID, global::System.String name)
+        public static CourseInstance CreateCourseInstance(global::System.String instanceID, global::System.String courseID)
         {
             CourseInstance courseInstance = new CourseInstance();
             courseInstance.instanceID = instanceID;
             courseInstance.courseID = courseID;
-            courseInstance.name = name;
             return courseInstance;
         }
 
@@ -606,7 +652,7 @@ namespace web.Models
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
         [DataMemberAttribute()]
-        public global::System.Int32 instanceID
+        public global::System.String instanceID
         {
             get
             {
@@ -618,14 +664,14 @@ namespace web.Models
                 {
                     OninstanceIDChanging(value);
                     ReportPropertyChanging("instanceID");
-                    _instanceID = StructuralObject.SetValidValue(value);
+                    _instanceID = StructuralObject.SetValidValue(value, false);
                     ReportPropertyChanged("instanceID");
                     OninstanceIDChanged();
                 }
             }
         }
-        private global::System.Int32 _instanceID;
-        partial void OninstanceIDChanging(global::System.Int32 value);
+        private global::System.String _instanceID;
+        partial void OninstanceIDChanging(global::System.String value);
         partial void OninstanceIDChanged();
     
         /// <summary>
@@ -633,7 +679,7 @@ namespace web.Models
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
-        public global::System.Int32 courseID
+        public global::System.String courseID
         {
             get
             {
@@ -643,38 +689,14 @@ namespace web.Models
             {
                 OncourseIDChanging(value);
                 ReportPropertyChanging("courseID");
-                _courseID = StructuralObject.SetValidValue(value);
+                _courseID = StructuralObject.SetValidValue(value, false);
                 ReportPropertyChanged("courseID");
                 OncourseIDChanged();
             }
         }
-        private global::System.Int32 _courseID;
-        partial void OncourseIDChanging(global::System.Int32 value);
+        private global::System.String _courseID;
+        partial void OncourseIDChanging(global::System.String value);
         partial void OncourseIDChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.String name
-        {
-            get
-            {
-                return _name;
-            }
-            set
-            {
-                OnnameChanging(value);
-                ReportPropertyChanging("name");
-                _name = StructuralObject.SetValidValue(value, false);
-                ReportPropertyChanged("name");
-                OnnameChanged();
-            }
-        }
-        private global::System.String _name;
-        partial void OnnameChanging(global::System.String value);
-        partial void OnnameChanged();
 
         #endregion
     
@@ -717,28 +739,6 @@ namespace web.Models
                 }
             }
         }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("starwarsModel", "FK_CourseParts_CourseInstance", "CourseParts")]
-        public EntityCollection<CoursePart> CourseParts
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<CoursePart>("starwarsModel.FK_CourseParts_CourseInstance", "CourseParts");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<CoursePart>("starwarsModel.FK_CourseParts_CourseInstance", "CourseParts", value);
-                }
-            }
-        }
 
         #endregion
     }
@@ -759,7 +759,7 @@ namespace web.Models
         /// <param name="partID">Initial value of the partID property.</param>
         /// <param name="name">Initial value of the name property.</param>
         /// <param name="instanceID">Initial value of the instanceID property.</param>
-        public static CoursePart CreateCoursePart(global::System.Int32 partID, global::System.String name, global::System.Int32 instanceID)
+        public static CoursePart CreateCoursePart(global::System.Int32 partID, global::System.String name, global::System.String instanceID)
         {
             CoursePart coursePart = new CoursePart();
             coursePart.partID = partID;
@@ -827,7 +827,7 @@ namespace web.Models
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
-        public global::System.Int32 instanceID
+        public global::System.String instanceID
         {
             get
             {
@@ -837,13 +837,13 @@ namespace web.Models
             {
                 OninstanceIDChanging(value);
                 ReportPropertyChanging("instanceID");
-                _instanceID = StructuralObject.SetValidValue(value);
+                _instanceID = StructuralObject.SetValidValue(value, false);
                 ReportPropertyChanged("instanceID");
                 OninstanceIDChanged();
             }
         }
-        private global::System.Int32 _instanceID;
-        partial void OninstanceIDChanging(global::System.Int32 value);
+        private global::System.String _instanceID;
+        partial void OninstanceIDChanging(global::System.String value);
         partial void OninstanceIDChanged();
     
         /// <summary>
@@ -928,16 +928,16 @@ namespace web.Models
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("starwarsModel", "FK_CourseParts_CourseInstance", "CourseInstances")]
-        public CourseInstance CourseInstance
+        [EdmRelationshipNavigationPropertyAttribute("starwarsModel", "FK_CourseParts_GradeType", "GradeType")]
+        public GradeType GradeType1
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<CourseInstance>("starwarsModel.FK_CourseParts_CourseInstance", "CourseInstances").Value;
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<GradeType>("starwarsModel.FK_CourseParts_GradeType", "GradeType").Value;
             }
             set
             {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<CourseInstance>("starwarsModel.FK_CourseParts_CourseInstance", "CourseInstances").Value = value;
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<GradeType>("starwarsModel.FK_CourseParts_GradeType", "GradeType").Value = value;
             }
         }
         /// <summary>
@@ -945,17 +945,17 @@ namespace web.Models
         /// </summary>
         [BrowsableAttribute(false)]
         [DataMemberAttribute()]
-        public EntityReference<CourseInstance> CourseInstanceReference
+        public EntityReference<GradeType> GradeType1Reference
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<CourseInstance>("starwarsModel.FK_CourseParts_CourseInstance", "CourseInstances");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<GradeType>("starwarsModel.FK_CourseParts_GradeType", "GradeType");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<CourseInstance>("starwarsModel.FK_CourseParts_CourseInstance", "CourseInstances", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<GradeType>("starwarsModel.FK_CourseParts_GradeType", "GradeType", value);
                 }
             }
         }
@@ -978,6 +978,112 @@ namespace web.Models
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Result>("starwarsModel.FK_Result_CourseInstance", "Results", value);
+                }
+            }
+        }
+
+        #endregion
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="starwarsModel", Name="GradeType")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class GradeType : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new GradeType object.
+        /// </summary>
+        /// <param name="typeID">Initial value of the typeID property.</param>
+        /// <param name="name">Initial value of the name property.</param>
+        public static GradeType CreateGradeType(global::System.Int32 typeID, global::System.String name)
+        {
+            GradeType gradeType = new GradeType();
+            gradeType.typeID = typeID;
+            gradeType.name = name;
+            return gradeType;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 typeID
+        {
+            get
+            {
+                return _typeID;
+            }
+            set
+            {
+                if (_typeID != value)
+                {
+                    OntypeIDChanging(value);
+                    ReportPropertyChanging("typeID");
+                    _typeID = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("typeID");
+                    OntypeIDChanged();
+                }
+            }
+        }
+        private global::System.Int32 _typeID;
+        partial void OntypeIDChanging(global::System.Int32 value);
+        partial void OntypeIDChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String name
+        {
+            get
+            {
+                return _name;
+            }
+            set
+            {
+                OnnameChanging(value);
+                ReportPropertyChanging("name");
+                _name = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("name");
+                OnnameChanged();
+            }
+        }
+        private global::System.String _name;
+        partial void OnnameChanging(global::System.String value);
+        partial void OnnameChanged();
+
+        #endregion
+    
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("starwarsModel", "FK_CourseParts_GradeType", "CourseParts")]
+        public EntityCollection<CoursePart> CourseParts
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<CoursePart>("starwarsModel.FK_CourseParts_GradeType", "CourseParts");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<CoursePart>("starwarsModel.FK_CourseParts_GradeType", "CourseParts", value);
                 }
             }
         }
@@ -1072,7 +1178,7 @@ namespace web.Models
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public Nullable<global::System.Double> value
+        public global::System.String value
         {
             get
             {
@@ -1082,13 +1188,13 @@ namespace web.Models
             {
                 OnvalueChanging(value);
                 ReportPropertyChanging("value");
-                _value = StructuralObject.SetValidValue(value);
+                _value = StructuralObject.SetValidValue(value, true);
                 ReportPropertyChanged("value");
                 OnvalueChanged();
             }
         }
-        private Nullable<global::System.Double> _value;
-        partial void OnvalueChanging(Nullable<global::System.Double> value);
+        private global::System.String _value;
+        partial void OnvalueChanging(global::System.String value);
         partial void OnvalueChanged();
     
         /// <summary>
@@ -1201,6 +1307,161 @@ namespace web.Models
     /// <summary>
     /// No Metadata Documentation available.
     /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="starwarsModel", Name="sysdiagram")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class sysdiagram : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new sysdiagram object.
+        /// </summary>
+        /// <param name="name">Initial value of the name property.</param>
+        /// <param name="principal_id">Initial value of the principal_id property.</param>
+        /// <param name="diagram_id">Initial value of the diagram_id property.</param>
+        public static sysdiagram Createsysdiagram(global::System.String name, global::System.Int32 principal_id, global::System.Int32 diagram_id)
+        {
+            sysdiagram sysdiagram = new sysdiagram();
+            sysdiagram.name = name;
+            sysdiagram.principal_id = principal_id;
+            sysdiagram.diagram_id = diagram_id;
+            return sysdiagram;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String name
+        {
+            get
+            {
+                return _name;
+            }
+            set
+            {
+                OnnameChanging(value);
+                ReportPropertyChanging("name");
+                _name = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("name");
+                OnnameChanged();
+            }
+        }
+        private global::System.String _name;
+        partial void OnnameChanging(global::System.String value);
+        partial void OnnameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 principal_id
+        {
+            get
+            {
+                return _principal_id;
+            }
+            set
+            {
+                Onprincipal_idChanging(value);
+                ReportPropertyChanging("principal_id");
+                _principal_id = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("principal_id");
+                Onprincipal_idChanged();
+            }
+        }
+        private global::System.Int32 _principal_id;
+        partial void Onprincipal_idChanging(global::System.Int32 value);
+        partial void Onprincipal_idChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 diagram_id
+        {
+            get
+            {
+                return _diagram_id;
+            }
+            set
+            {
+                if (_diagram_id != value)
+                {
+                    Ondiagram_idChanging(value);
+                    ReportPropertyChanging("diagram_id");
+                    _diagram_id = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("diagram_id");
+                    Ondiagram_idChanged();
+                }
+            }
+        }
+        private global::System.Int32 _diagram_id;
+        partial void Ondiagram_idChanging(global::System.Int32 value);
+        partial void Ondiagram_idChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int32> version
+        {
+            get
+            {
+                return _version;
+            }
+            set
+            {
+                OnversionChanging(value);
+                ReportPropertyChanging("version");
+                _version = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("version");
+                OnversionChanged();
+            }
+        }
+        private Nullable<global::System.Int32> _version;
+        partial void OnversionChanging(Nullable<global::System.Int32> value);
+        partial void OnversionChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.Byte[] definition
+        {
+            get
+            {
+                return StructuralObject.GetValidValue(_definition);
+            }
+            set
+            {
+                OndefinitionChanging(value);
+                ReportPropertyChanging("definition");
+                _definition = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("definition");
+                OndefinitionChanged();
+            }
+        }
+        private global::System.Byte[] _definition;
+        partial void OndefinitionChanging(global::System.Byte[] value);
+        partial void OndefinitionChanged();
+
+        #endregion
+    
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
     [EdmEntityTypeAttribute(NamespaceName="starwarsModel", Name="User")]
     [Serializable()]
     [DataContractAttribute(IsReference=true)]
@@ -1214,13 +1475,15 @@ namespace web.Models
         /// <param name="userID">Initial value of the userID property.</param>
         /// <param name="roleID">Initial value of the roleID property.</param>
         /// <param name="login">Initial value of the login property.</param>
+        /// <param name="fullname">Initial value of the fullname property.</param>
         /// <param name="password">Initial value of the password property.</param>
-        public static User CreateUser(global::System.Int32 userID, global::System.Int32 roleID, global::System.String login, global::System.String password)
+        public static User CreateUser(global::System.Int32 userID, global::System.Int32 roleID, global::System.String login, global::System.String fullname, global::System.String password)
         {
             User user = new User();
             user.userID = userID;
             user.roleID = roleID;
             user.login = login;
+            user.fullname = fullname;
             user.password = password;
             return user;
         }
@@ -1302,6 +1565,30 @@ namespace web.Models
         private global::System.String _login;
         partial void OnloginChanging(global::System.String value);
         partial void OnloginChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String fullname
+        {
+            get
+            {
+                return _fullname;
+            }
+            set
+            {
+                OnfullnameChanging(value);
+                ReportPropertyChanging("fullname");
+                _fullname = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("fullname");
+                OnfullnameChanged();
+            }
+        }
+        private global::System.String _fullname;
+        partial void OnfullnameChanging(global::System.String value);
+        partial void OnfullnameChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
