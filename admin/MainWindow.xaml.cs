@@ -34,7 +34,7 @@ namespace admin {
             string sql = null;
 
             connetionString = "Data Source=130.237.226.220;Initial Catalog=starwars;User ID=charizard;Password=polka123";
-            sql = "SELECT * from Anvandare where anvID=" + textBox1.GetLineText(0) + "and password = " + textBox2.GetLineText(0) + ";";
+            sql = "SELECT * from Users where login=" + textBox1.Text + "and password = " + textBox2.Password + ";";
 
             connection = new SqlConnection(connetionString);
 
